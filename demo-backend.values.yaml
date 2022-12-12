@@ -1,0 +1,30 @@
+replicaCount: 1
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://terminfinder.opencode.local"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: selfsigned # More here: https://cert-manager.io/docs/configuration/selfsigned/#deployment
+  hosts:
+    # For this demo, we create a local dns entry (e.g. via /etc/hosts) and try it out with that
+    # TODO: Change domain for your use-case
+    - host: terminfinder.opencode.local
+      paths:
+        - path: /api(/|$)(.*)
+          pathType: Prefix
+  tls:
+    - secretName: cert-terminfinder.opencode.local
+      hosts:
+        - terminfinder.opencode.local
+
+# For testing, enabled the autoscaling
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
