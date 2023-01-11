@@ -7,7 +7,7 @@ Complete Helm Chart repository for deploying the Terminfinder to any kubernetes 
 ## Components
 
 * Frontend: `registry.opencode.de/ig-bvc/demo-apps/terminfinder-sh/terminfinder-sh-frontend:v2.2.0`
-* Backend: `registry.opencode.de/ig-bvc/demo-apps/terminfinder-sh/terminfinder-sh-backend:V1.0.7-c`
+* Backend: `registry.opencode.de/ig-bvc/demo-apps/terminfinder-sh/terminfinder-sh-backend:V1.0.9`
 * Postgres (part of Backend): Using [this public Helm chart](https://github.com/bitnami/charts/tree/main/bitnami/postgresql/) as fundament, but can be disabled through `values.yaml` of the backend file.
 
 Please modify the `values.yaml` files or use the CLI method for deployment and configuration. It's recommended to use an dedicated PostgreSQL instance for production usage.

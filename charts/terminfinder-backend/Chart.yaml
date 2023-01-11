@@ -3,7 +3,7 @@ name: terminfinder-backend
 description: Web Backend für die Erstellung von Terminumfragen und die Beantwortung dieser.
 type: application
 version: 1.0.0
-appVersion: "v1.0.9" # TODO: Check if this is already uploaded!
+appVersion: "V1.0.9"
 
 dependencies:
   - name: postgresql
