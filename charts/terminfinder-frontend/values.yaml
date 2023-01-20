@@ -20,6 +20,15 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
 podAnnotations: {}
 
 podSecurityContext:
@@ -63,12 +72,12 @@ resources:
   # We recommend to not use limits, since workload spikes can hinder the application or cause crashes
   # due to OOM errors. Read more about it here:
   # https://cloud.google.com/blog/products/containers-kubernetes/kubernetes-best-practices-resource-requests-and-limits?hl=en
-  # limits:
-  #   cpu: 500m
-  #   memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
   requests:
-    cpu: 250m
-    memory: 128Mi
+    cpu: 500m
+    memory: 256Mi
 
 autoscaling:
   enabled: false

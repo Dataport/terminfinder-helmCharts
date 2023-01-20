@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "terminfinder-frontend.fullname" . }}
+  namespace:  {{ .Release.Namespace }}
   labels:
     {{- include "terminfinder-frontend.labels" . | nindent 4 }}
 spec:

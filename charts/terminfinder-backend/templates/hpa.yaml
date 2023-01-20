@@ -3,6 +3,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "terminfinder-backend.fullname" . }}
+  namespace:  {{ .Release.Namespace }}
   labels:
     {{- include "terminfinder-backend.labels" . | nindent 4 }}
 spec:
