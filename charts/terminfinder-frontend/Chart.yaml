@@ -3,4 +3,4 @@ name: terminfinder-frontend
 description: Webanwendung für die Erstellung von Terminumfragen und die Beantwortung dieser.
 type: application
 version: 1.0.0
-appVersion: "v2.0.2"
+appVersion: "v2.1.9"

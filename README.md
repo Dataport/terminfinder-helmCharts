@@ -4,6 +4,10 @@ Complete Helm Chart repository for deploying the Terminfinder to any kubernetes 
 
 > These Helm charts are not compatible with Kubernetes <1.23, if you are enabling autoscaling.
 
+## General Information
+
+[SECURITY.md](./SECURITY.md)
+
 ## Components
 
 * Frontend: `registry.opencode.de/ig-bvc/demo-apps/terminfinder-sh/terminfinder-sh-frontend:v2.2.0`

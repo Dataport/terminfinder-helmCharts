@@ -25,6 +25,34 @@ ingress:
 autoscaling:
   enabled: true
   minReplicas: 1
-  maxReplicas: 20
+  maxReplicas: 10
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
+
+# This is just for testing, since in minikube we cant run completely as non-root
+postgresql:
+  volumePermissions:
+    enabled: false
+
+  primary:
+    ## Update permissions for the data folder
+    initContainers:
+      - name: update-permissions
+        image: docker.io/busybox:latest
+        imagePullPolicy: Always
+        command:
+          - "sh"
+          - "-c"
+          - "chown -R 1001:1001 /bitnami/postgresql && chmod -R 0700 /bitnami/postgresql"
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+          - name: data
+            mountPath: /bitnami/postgresql
+        resources:
+          requests:
+            memory: 64Mi
+            cpu: 250m
+          limits:
+            memory: 64Mi
+            cpu: 250m

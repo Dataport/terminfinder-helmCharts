@@ -11,7 +11,7 @@ app:
 replicaCount: 1 # Not HA for now!
 
 image:
-  repository: registry.opencode.de/ig-bvc/demo-apps/terminfinder-sh/terminfinder-sh-frontend
+  repository: registry.opencode.de/dataport/terminfinder/terminfinder-frontend
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
