@@ -24,6 +24,7 @@ Please modify the `values.yaml` files or use the CLI method for deployment and c
 * To use the ingress configuration, you need a ingress controller (e.g. [Nginx Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/))
 * It's recommended to use a TLS connection at the ingress, therefore use the `tls` option in the Ingress definition.
 * For usage of the TLS, you need to attach either manually an TLS cert via an secret, or use [cert-manager](https://cert-manager.io) for managing it via a cert-issuer (e.g. let's-encrypt).
+* For communication between backend and postgres, we use a DNS entry. If you use Incluster-PostgreSQL instance, you need CoreDNS.
 * For production usage, may use an own postgres instance. (Recommended, use the [Cloud Native PG Operator](https://cloudnative-pg.io) in Kubernetes)
 
 ### Installation steps

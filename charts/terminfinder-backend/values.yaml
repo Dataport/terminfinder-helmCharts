@@ -107,7 +107,7 @@ postgresql:
   image:
     registry: docker.io # Notice, may this is not allowed
     repository: mxzinke/postgresql-rootless # This is an special image, which is based on bitnami/postgresql
-    tag: 12
+    tag: 15
     pullPolicy: IfNotPresent
     pullSecrets: []
 

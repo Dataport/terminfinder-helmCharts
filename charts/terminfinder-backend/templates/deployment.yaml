@@ -45,12 +45,12 @@ spec:
             - name: DB_USERNAME
               value: {{ .Values.global.postgresql.auth.username }}
             - name: ASPNETCORE_URLS
-              value: http://+:80
+              value: http://+:8080
             # Secrets:
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.postgresql.auth.existingSecret | default (printf "%s-postgresql" (include "terminfinder-backend.fullname" .)) }}
+                  name: {{ .Values.global.postgresql.auth.existingSecret | default (printf "%s-postgresql" (include "common.names.fullname" .)) }}
                   key: {{ .Values.global.postgresql.auth.secretKeys.userPasswordKey | default "password" }}
             # Patches
             - name: Terminfinder__UseHttps
@@ -63,7 +63,7 @@ spec:
               value: "Server=$(DB_ADDRESS);Port=$(DB_PORT);Database=$(DB_DATABASE);User ID=$(DB_USERNAME);password=$(DB_PASSWORD);"
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
