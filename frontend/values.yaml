@@ -55,8 +55,8 @@ ingress:
   className: "nginx"
   annotations:
     { }
-    # kubernetes.io/ingress.class: nginx
-    # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  # kubernetes.io/ingress.class: nginx
+  # nginx.ingress.kubernetes.io/ssl-redirect: "true"
   # cert-manager.io/cluster-issuer: letsencrypt-production
   hosts:
     - host: terminfinder.opencode.de

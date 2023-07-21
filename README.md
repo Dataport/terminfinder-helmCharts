@@ -64,8 +64,8 @@ Your can upgrade the helm chart as usually with `helm upgrade ...` command.
 
 The helm chart deployment of the `terminfinder-frontend` will be kept untouched.
 
-By default, an own instance of postgres is installed with the `terminfinder-backend` chart. You can disable by adding the
-following configuration to you `values.yaml` of the backend helm installation:
+By default, an own instance of postgres is installed with the `terminfinder-backend` chart. You can disable by adding
+the following configuration to you `values.yaml` of the backend helm installation:
 
 ```yaml
 postgresql:
