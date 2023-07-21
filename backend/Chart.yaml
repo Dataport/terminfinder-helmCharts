@@ -1,9 +1,9 @@
 apiVersion: v2
-name: terminfinder-backend
+name: terminfinder-backend-oss
 description: Web Backend für die Erstellung von Terminumfragen und die Beantwortung dieser.
 type: application
-version: 1.0.3
-appVersion: "v1.0.9"
+version: 0.0.0
+appVersion: "1.0.10"
 
 dependencies:
   - name: postgresql

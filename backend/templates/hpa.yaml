@@ -2,15 +2,15 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "terminfinder-frontend.fullname" . }}
-  namespace:  {{ .Release.Namespace }}
+  name: {{ include "terminfinder-backend.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "terminfinder-frontend.labels" . | nindent 4 }}
+    {{- include "terminfinder-backend.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "terminfinder-frontend.fullname" . }}
+    name: {{ include "terminfinder-backend.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

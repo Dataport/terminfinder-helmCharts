@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "terminfinder-backend.fullname" . }}
-  namespace:  {{ .Release.Namespace }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "terminfinder-backend.labels" . | nindent 4 }}
 spec:
@@ -37,9 +37,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DB_DATABASE
-              value: {{ .Values.global.postgresql.auth.database }} 
+              value: {{ .Values.global.postgresql.auth.database }}
             - name: DB_PORT
-              value: {{ .Values.global.postgresql.service.ports.postgresql | quote }} 
+              value: {{ .Values.global.postgresql.service.ports.postgresql | quote }}
             - name: DB_ADDRESS
               value: {{ printf "%s.%s.svc" $svc .Release.Namespace }}
             - name: DB_USERNAME

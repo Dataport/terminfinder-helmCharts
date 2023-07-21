@@ -1,23 +1,4 @@
-lint:
-  image: $ARTIFACTORY_SERVICE_IMAGES_URL/helm
-  script:
-    - helm lint ./charts/terminfinder-backend --with-subcharts
-    - helm lint ./charts/terminfinder-frontend
-
-helm package:
-  image: $ARTIFACTORY_SERVICE_IMAGES_URL/helm
-  needs:
-    - lint
-  script:
-    - helm package ./charts/terminfinder-backend
-    - helm package ./charts/terminfinder-frontend
-  artifacts:
-    paths:
-      - "*.tgz"
-
-helm release:
-  image: $ARTIFACTORY_SERVICE_IMAGES_URL/jfrogcli
-  needs:
-    - helm package
-  script:
-    - jf rt u "terminfinder-*.tgz" helm-charts --url https://${ARTIFACTORY_URL}/artifactory/${ARTIFACTORY_HELMCHARTS_DEVELOPMENT} --user ${DOCKER_DEV_USER} --password ${DOCKER_DEV_PASSWORD}
+include:
+  - project: "dabstimmbox/ci"
+    ref: "main"
+    file: "helmCharts-oss.yml"

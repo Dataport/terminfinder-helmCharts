@@ -12,20 +12,27 @@ Complete Helm Chart repository for deploying the Terminfinder to any kubernetes 
 
 * Frontend: `registry.opencode.de/ig-bvc/demo-apps/terminfinder-sh/terminfinder-sh-frontend:v2.2.0`
 * Backend: `registry.opencode.de/ig-bvc/demo-apps/terminfinder-sh/terminfinder-sh-backend:V1.0.9`
-* Postgres (part of Backend): Using [this public Helm chart](https://github.com/bitnami/charts/tree/main/bitnami/postgresql/) as fundament, but can be disabled through `values.yaml` of the backend file.
+* Postgres (part of Backend):
+  Using [this public Helm chart](https://github.com/bitnami/charts/tree/main/bitnami/postgresql/) as fundament, but can
+  be disabled through `values.yaml` of the backend file.
 
-Please modify the `values.yaml` files or use the CLI method for deployment and configuration. It's recommended to use an dedicated PostgreSQL instance for production usage.
+Please modify the `values.yaml` files or use the CLI method for deployment and configuration. It's recommended to use a
+dedicated PostgreSQL instance for production usage.
 
 ## Installation
 
 ### Recommendations
 
-* It's recommended to work with a ingress configuration, use `values.yaml` config for that.
-* To use the ingress configuration, you need a ingress controller (e.g. [Nginx Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/))
+* It's recommended to work with an ingress configuration, use `values.yaml` config for that.
+* To use the ingress configuration, you need an ingress controller (
+  e.g. [Nginx Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/))
 * It's recommended to use a TLS connection at the ingress, therefore use the `tls` option in the Ingress definition.
-* For usage of the TLS, you need to attach either manually an TLS cert via an secret, or use [cert-manager](https://cert-manager.io) for managing it via a cert-issuer (e.g. let's-encrypt).
-* For communication between backend and postgres, we use a DNS entry. If you use Incluster-PostgreSQL instance, you need CoreDNS.
-* For production usage, may use an own postgres instance. (Recommended, use the [Cloud Native PG Operator](https://cloudnative-pg.io) in Kubernetes)
+* For usage of the TLS, you need to attach either manually an TLS cert via a secret, or
+  use [cert-manager](https://cert-manager.io) for managing it via a cert-issuer (e.g. let's-encrypt).
+* For communication between backend and postgres, we use a DNS entry. If you use Incluster-PostgreSQL instance, you need
+  CoreDNS.
+* For production usage, may use an own postgres instance. (Recommended, use
+  the [Cloud Native PG Operator](https://cloudnative-pg.io) in Kubernetes)
 
 ### Installation steps
 
@@ -53,11 +60,12 @@ $ kubectl get ingress -n terminfinder-demo
 
 Your can upgrade the helm chart as usually with `helm upgrade ...` command.
 
-### Using a own PostgreSQL DB instance
+### Using an own PostgreSQL DB instance
 
 The helm chart deployment of the `terminfinder-frontend` will be kept untouched.
 
-By default a own instance of postgres is install with the `terminfinder-backend` chart. You can disable by adding the following configuration to you `values.yaml` of the backend helm installation:
+By default, an own instance of postgres is installed with the `terminfinder-backend` chart. You can disable by adding the
+following configuration to you `values.yaml` of the backend helm installation:
 
 ```yaml
 postgresql:
@@ -82,7 +90,8 @@ data:
   customPasswordKey: "eW91LWtub3ctaG93LWl0LXdvcmtzLSN0aGVsw6RuZAo="
 ```
 
-With this secret already deployed, you can modify the helm chart deployment of the `terminfinder-backend` on this values:
+With this secret already deployed, you can modify the helm chart deployment of the `terminfinder-backend` on these
+values:
 
 ```yaml
 global:
