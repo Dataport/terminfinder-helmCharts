@@ -2,10 +2,13 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+customerConfig:
+  ADDRESSING: "du" # supported: du, sie
+  LOCALE: "de-DE" # supported: DE-de, EN-en
+  TITLE: "Terminfinder Demo"
+  EMAIL: ""
+
 app:
-  title: "Terminfinder Demo"
-  locale: "DE-de" # supported: DE-de, EN-en
-  addressing: "du" # supported: du, sie
   backend_url: https://terminfinder.opencode.de/api # Public URL to Backend
 
 replicaCount: 1 # Not HA for now!
