@@ -1,0 +1,9 @@
+apiVersion: cloud.dataport.de/v1alpha1
+kind: PostgreSQL
+metadata:
+  name: {{ include "terminfinder-resources.fullname" . }}-db
+  namespace: {{ .Release.Namespace }}
+spec:
+  storageSize: {{ .Values.postgres.storageSize }}
+  pgVersion: {{ .Values.postgres.pgVersion }}
+  instances: {{ .Values.postgres.instances }}

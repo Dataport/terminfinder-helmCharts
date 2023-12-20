@@ -1,0 +1,6 @@
+apiVersion: v2
+name: terminfinder-resources
+description: HelmChart, der die Ressourcen des Terminfinders zusammenfasst.
+type: application
+version: 0.0.0
+appVersion: "1.0.10"
