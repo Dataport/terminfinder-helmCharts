@@ -1,0 +1,26 @@
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: LogsInstance
+metadata:
+  name: {{ include "terminfinder-resources.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  clients:
+  - url: {{.Values.loki.endpoint}}
+    tenantId: {{.Values.loki.tenantId}}
+  podLogsSelector:
+    matchLabels:
+      {{- include "terminfinder-resources.labels" . | nindent 6 }}
+
+---
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: PodLogs
+metadata:
+  name: {{ include "terminfinder-resources.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "terminfinder-resources.labels" . | nindent 4 }}
+spec:
+  pipelineStages:
+    - cri: {}
+  selector:
+    matchLabels: {}

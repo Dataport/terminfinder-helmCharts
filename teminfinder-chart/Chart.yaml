@@ -1,0 +1,11 @@
+apiVersion: v2
+name: terminfinder-combined
+description: HelmChart, der das Front- und Backend des Terminfinders kombiniert.
+type: application
+version: 0.0.0
+appVersion: "1.0.10"
+
+dependencies:
+  - name: terminfinder-frontend-oss
+  - name: terminfinder-backend-oss
+  - name: terminfinder-resources
