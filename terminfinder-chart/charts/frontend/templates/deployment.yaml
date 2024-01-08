@@ -38,22 +38,22 @@ spec:
             - name: ADDRESSING
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Release.Name }}-customerConfig
+                  name: {{ .Release.Name }}-customer-config
                   key: Anrede
             - name: LOCALE
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Release.Name }}-customerConfig
+                  name: {{ .Release.Name }}-customer-config
                   key: Sprache
             - name: TITLE
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Release.Name }}-customerConfig
+                  name: {{ .Release.Name }}-customer-config
                   key: Titel
             - name: EMAIL
               valueFrom:
                 configMapKeyRef:
-                  name: {{ .Release.Name }}-customerConfig
+                  name: {{ .Release.Name }}-customer-config
                   key: email
             - name: API_URL
               value: {{ .Values.app.backend_url }}
