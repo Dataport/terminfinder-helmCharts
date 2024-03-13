@@ -8,6 +8,8 @@ global:
       username: terminfinder
       database: terminfinder
       existingSecret: "" # if not set, default: "{{ Release.Name }}-postgres"
+      secretKeys:
+        userPasswordKey: "terminfinder"
 
     service:
       name: "" # if not set, default: "{{ Release.Name }}-postgres"
@@ -19,8 +21,7 @@ replicaCount: 1
 image:
   repository: registry.opencode.de/dataport/terminfinder/terminfinder-backend
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "0.1.0"
 
 imagePullSecrets: [ ]
 nameOverride: ""
