@@ -1,0 +1,17 @@
+name: Helm
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-helm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Lint Helm
+        uses: WyriHaximus/github-action-helm3@v3
+        with:
+          exec: helm lint ./terminfinder-chart
