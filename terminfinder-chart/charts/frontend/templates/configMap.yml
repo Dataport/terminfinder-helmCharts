@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-customer-config
 data:
-  Anrede: {{ .Values.customerConfig.ADDRESSING }}
-  Sprache: {{ .Values.customerConfig.LOCALE }}
-  Titel: {{ .Values.customerConfig.TITLE }}
-  email: {{ .Values.customerConfig.EMAIL }}
+  Anrede: "{{ .Values.customerConfig.ADDRESSING }}"
+  Sprache: "{{ .Values.customerConfig.LOCALE }}"
+  Titel: "{{ .Values.customerConfig.TITLE }}"
+  email: "{{ .Values.customerConfig.EMAIL }}"
