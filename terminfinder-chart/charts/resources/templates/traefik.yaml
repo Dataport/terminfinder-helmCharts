@@ -1,3 +1,4 @@
+{{- if .Values.traefik.enabled -}}
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -7,3 +8,4 @@ spec:
   stripPrefix:
     prefixes:
     - /api
+{{- end }}
