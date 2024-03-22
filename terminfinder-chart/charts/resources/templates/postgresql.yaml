@@ -1,3 +1,4 @@
+{{- if .Values.postgres.enabled -}}
 apiVersion: cloud.dataport.de/v1alpha1
 kind: PostgreSQL
 metadata:
@@ -7,3 +8,4 @@ spec:
   storageSize: {{ .Values.postgres.storageSize }}
   pgVersion: "{{ .Values.postgres.pgVersion }}"
   instances: {{ .Values.postgres.instances }}
+{{- end }}

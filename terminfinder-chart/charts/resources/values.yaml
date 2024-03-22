@@ -6,3 +6,7 @@ postgres:
   storageSize: "2Gi"
   pgVersion: "15"
   instances: 3
+  enabled: true
+
+traefik:
+  enabled: true
