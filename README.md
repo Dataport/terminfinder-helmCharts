@@ -6,7 +6,9 @@ Complete Helm Chart repository for deploying the Terminfinder to any kubernetes 
 
 ## General Information
 
-[SECURITY.md](./SECURITY.md)
+[CONTRIBUTING.md](./docs/CONTRIBUTING.md)
+
+[SECURITY.md](./docs/SECURITY.md)
 
 ## Components
 
