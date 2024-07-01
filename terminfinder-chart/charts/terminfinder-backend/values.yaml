@@ -9,8 +9,7 @@ global:
       database: terminfinder
       existingSecret: "" # if not set, default: "{{ Release.Name }}-postgres"
       secretKeys:
-        userPasswordKey: "terminfinder"
-
+        userPasswordKey: "password"
     service:
       name: "" # if not set, default: "{{ Release.Name }}-postgres"
       ports:
@@ -104,13 +103,6 @@ postgresql:
 
   serviceAccount:
     create: true
-
-  image:
-    registry: docker.io # Notice, may this is not allowed
-    repository: mxzinke/postgresql-rootless # This is an special image, which is based on bitnami/postgresql
-    tag: 15
-    pullPolicy: IfNotPresent
-    pullSecrets: [ ]
 
   ## Set permissions for the data volume
   ## Only needed when volume has not correct permissions
