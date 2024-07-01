@@ -10,16 +10,12 @@ Complete Helm Chart repository for deploying the Terminfinder to any kubernetes 
 
 [SECURITY.md](./docs/SECURITY.md)
 
-## Components
+It's recommended to use a dedicated PostgreSQL instance for production usage.
 
-* Frontend: `registry.opencode.de/ig-bvc/demo-apps/terminfinder-sh/terminfinder-sh-frontend:v2.2.0`
-* Backend: `registry.opencode.de/ig-bvc/demo-apps/terminfinder-sh/terminfinder-sh-backend:V1.0.9`
-* Postgres (part of Backend):
-  Using [this public Helm chart](https://github.com/bitnami/charts/tree/main/bitnami/postgresql/) as fundament, but can
-  be disabled through `values.yaml` of the backend file.
+## Local development
 
-Please modify the `values.yaml` files or use the CLI method for deployment and configuration. It's recommended to use a
-dedicated PostgreSQL instance for production usage.
+1. install and run minikube or other local K8s services https://kubernetes.io/docs/tasks/tools/
+2. use scripts in installation below
 
 ## Installation
 
@@ -38,31 +34,48 @@ dedicated PostgreSQL instance for production usage.
 
 ### Installation steps
 
-1. Prepare the value files for the backend and frontend each.
-2. Install the helm charts with `helm install ...` CLI Command
+1. Prepare the value files.
+2. Install the helm charts with `helm install ...` CLI Command:
 
 ```bash
 # Create a namespace (or use default), where to work in:
-$ kubectl create ns terminfinder-demo
+$ kubectl create namespace terminfinder-demo
 
 # First installing the helm chart, to the name
-$ helm install terminfinder-backend ./charts/terminfinder-backend -n terminfinder-demo -f demo-backend.values.yaml
-
-# Second installing the helm chart of the frontend
-$ helm install terminfinder-frontend ./charts/terminfinder-frontend -n terminfinder-demo -f demo-frontend.values.yaml
+$ helm install terminfinder-demo terminfinder-chart -n terminfinder-demo
 
 # Verify installation of helm charts:
 $ helm list -n terminfinder-demo
 $ kubectl get deploy -n terminfinder-demo
-
-# Go to your configured ingress host domain (e.g. terminfinder.open-code.local) and test it out!
-# The URL of the ingresses you can get here:
-$ kubectl get ingress -n terminfinder-demo
 ```
 
-Your can upgrade the helm chart as usually with `helm upgrade ...` command.
+### Upgrade release
 
-### Using an own PostgreSQL DB instance
+To upgrade the helm chart, use the `helm upgrade ...` command:
+
+```bash
+# Upgrade HelmChart
+$ helm upgrade terminfinder-demo terminfinder-chart -n terminfinder-demo
+```
+
+### Delete Release
+
+To delete the helm chart (release), use the `helm uninstall...` command.
+
+Note that the persistent volume may be available even if the helm release is uninstalled.
+
+```bash
+# Delete release
+$ helm uninstall terminfinder-demo -n terminfinder-demo
+```
+
+```bash
+# Delete PVCs and namespace
+$ kubectl delete pvc --all -n terminfinder-demo
+$ kubectl delete namespace terminfinder-demo
+```
+
+## Using an own PostgreSQL DB instance
 
 The helm chart deployment of the `terminfinder-frontend` will be kept untouched.
 

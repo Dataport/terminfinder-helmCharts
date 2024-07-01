@@ -9,8 +9,7 @@ global:
       database: terminfinder
       existingSecret: "" # if not set, default: "{{ Release.Name }}-postgres"
       secretKeys:
-        userPasswordKey: "terminfinder"
-
+        userPasswordKey: "password"
     service:
       name: "" # if not set, default: "{{ Release.Name }}-postgres"
       ports:
@@ -100,22 +99,13 @@ affinity: { }
 postgresql:
   enabled: true
 
-  #architecture: standalone
-
   serviceAccount:
     create: true
-
-  image:
-    registry: docker.io # Notice, may this is not allowed
-    repository: mxzinke/postgresql-rootless # This is an special image, which is based on bitnami/postgresql
-    tag: 15
-    pullPolicy: IfNotPresent
-    pullSecrets: [ ]
 
   ## Set permissions for the data volume
   ## Only needed when volume has not correct permissions
   volumePermissions:
-    enabled: false
+    enabled: true
 
     image:
       registry: docker.io # Notice, may this is not allowed
@@ -123,58 +113,6 @@ postgresql:
       # tag: 11-debian-11-r77
       # pullPolicy: Always
       # pullSecrets: []
-
-    resources:
-      requests:
-        memory: 64Mi
-        cpu: 250m
-      limits:
-        memory: 64Mi
-        cpu: 250m
-
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      allowPrivilegeEscalation: false
-      runAsNonRoot: true
-      capabilities:
-        drop:
-          - ALL
-
-  primary:
-    ## Enable security context with non-root user
-    podSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      fsGroup: 1001
-    containerSecurityContext:
-      enabled: true
-      runAsUser: 1001
-      runAsGroup: 1001
-      allowPrivilegeEscalation: false
-      runAsNonRoot: true
-      capabilities:
-        drop:
-          - ALL
-
-    ## Enable persistence using Persistent Volume Claims
-    ## For BSI compliance, we need to use non-root user
-    persistence:
-      enabled: true
-      accessModes:
-        - ReadWriteOnce
-      size: 8Gi
-
-    # Resources (minimal)
-    resources:
-      requests:
-        memory: 256Mi
-        cpu: 250m
-      limits:
-        memory: 256Mi
-        cpu: 250m
 
     initdb:
       # Enabling the UUID-OSSP

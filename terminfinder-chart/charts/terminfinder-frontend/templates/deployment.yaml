@@ -36,25 +36,13 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: ADDRESSING
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Release.Name }}-customer-config
-                  key: Anrede
+              value: {{ .Values.customerConfig.ADDRESSING }}
             - name: LOCALE
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Release.Name }}-customer-config
-                  key: Sprache
+              value: {{ .Values.customerConfig.LOCALE }}
             - name: TITLE
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Release.Name }}-customer-config
-                  key: Titel
+              value: {{ .Values.customerConfig.TITLE }}
             - name: EMAIL
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Release.Name }}-customer-config
-                  key: email
+              value: {{ .Values.customerConfig.EMAIL }}
             - name: API_URL
               value: {{ .Values.app.backend_url }}
           ports:
