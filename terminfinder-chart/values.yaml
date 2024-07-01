@@ -1,4 +1,4 @@
-terminfinder-frontend-oss:
+terminfinder-frontend:
   # Default values for terminfinder-frontend.
   # This is a YAML-formatted file.
   # Declare variables to be passed into your templates.
@@ -13,12 +13,6 @@ terminfinder-frontend-oss:
     backend_url: https://terminfinder.opencode.de/api # Public URL to Backend
 
   replicaCount: 1 # Not HA for now!
-
-  image:
-    repository: registry.opencode.de/dataport/terminfinder/terminfinder-frontend
-    pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
 
   imagePullSecrets: [ ]
   nameOverride: ""
@@ -96,30 +90,12 @@ terminfinder-frontend-oss:
 
   affinity: { }
 
-terminfinder-backend-oss:
+terminfinder-backend:
   # Default values for terminfinder-backend.
   # This is a YAML-formatted file.
   # Declare variables to be passed into your templates.
 
-  global:
-    postgresql:
-      auth:
-        username: pgsql-admin
-        database: terminfinder
-        existingSecret: "" # if not set, default: "{{ Release.Name }}-postgres"
-
-      service:
-        name: "" # if not set, default: "{{ Release.Name }}-postgres"
-        ports:
-          postgresql: 5432 # Default port
-
   replicaCount: 1
-
-  image:
-    repository: registry.opencode.de/dataport/terminfinder/terminfinder-backend
-    pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
 
   imagePullSecrets: [ ]
   nameOverride: ""
@@ -203,24 +179,14 @@ terminfinder-backend-oss:
     serviceAccount:
       create: true
 
-    image:
-      registry: docker.io # Notice, may this is not allowed
-      repository: mxzinke/postgresql-rootless # This is an special image, which is based on bitnami/postgresql
-      tag: 15
-      pullPolicy: IfNotPresent
-      pullSecrets: [ ]
-
     ## Set permissions for the data volume
     ## Only needed when volume has not correct permissions
     volumePermissions:
       enabled: false
 
       image:
-        registry: docker.io # Notice, may this is not allowed
+        registry: docker.io
         repository: bitnami/bitnami-shell
-        # tag: 11-debian-11-r77
-        # pullPolicy: Always
-        # pullSecrets: []
 
       resources:
         requests:
@@ -231,7 +197,7 @@ terminfinder-backend-oss:
           cpu: 250m
 
       containerSecurityContext:
-        enabled: true
+        enabled: false
         runAsUser: 1001
         runAsGroup: 1001
         allowPrivilegeEscalation: false
@@ -243,12 +209,12 @@ terminfinder-backend-oss:
     primary:
       ## Enable security context with non-root user
       podSecurityContext:
-        enabled: true
+        enabled: false
         runAsUser: 1001
         runAsGroup: 1001
         fsGroup: 1001
       containerSecurityContext:
-        enabled: true
+        enabled: false
         runAsUser: 1001
         runAsGroup: 1001
         allowPrivilegeEscalation: false
@@ -285,15 +251,12 @@ terminfinder-backend-oss:
     # https://github.com/bitnami/charts/tree/main/bitnami/postgresql#parameters
 
 terminfinder-resources:
-  loki:
-    endpoint: http://loki-gateway.logging-system.svc.cluster.local/loki/api/v1/push
-    tenantId: 6703bd86-3601-4ea8-96e4-ecff048f1de9
-
-  postgres:
-    storageSize: "2Gi"
-    pgVersion: "15"
-    instances: 3
-    enabled: true
+  grafana:
+    enabled: false
+    loki:
+      endpoint: http://loki-gateway.logging-system.svc.cluster.local/loki/api/v1/push
+      tenantId: 6703bd86-3601-4ea8-96e4-ecff048f1de9
+      enabled: false
 
   traefik:
-    enabled: true
+    enabled: false

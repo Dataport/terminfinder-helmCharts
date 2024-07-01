@@ -1,4 +1,4 @@
-{{- $svc := .Values.global.postgresql.service.name | default (printf "%s-postgresql-hl" (include "terminfinder-backend.fullname" .)) }}
+{{- $svc := .Values.global.postgresql.service.name | default (printf "%s-postgresql" (include "common.names.namespace" .)) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -41,7 +41,7 @@ spec:
             - name: DB_PORT
               value: {{ .Values.global.postgresql.service.ports.postgresql | quote }}
             - name: DB_ADDRESS
-              value: {{ printf "%s.%s.svc" $svc .Release.Namespace }}
+              value: {{ printf "%s" $svc }}
             - name: DB_USERNAME
               value: {{ .Values.global.postgresql.auth.username }}
             - name: ASPNETCORE_URLS
@@ -50,7 +50,7 @@ spec:
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.postgresql.auth.existingSecret | default (printf "%s-postgresql" (include "common.names.fullname" .)) }}
+                  name: {{ .Values.global.postgresql.auth.existingSecret | default (printf "%s-postgresql" (include "common.names.namespace" .)) }}
                   key: {{ .Values.global.postgresql.auth.secretKeys.userPasswordKey | default "password" }}
             # Patches
             - name: Terminfinder__UseHttps
@@ -60,12 +60,19 @@ spec:
             - name: Terminfinder__Log4NetConfigFilename
               value: log4net.Console.debug.config
             - name: ConnectionStrings__TerminfinderConnection
-              value: "Server=$(DB_ADDRESS);Port=$(DB_PORT);Database=$(DB_DATABASE);User ID=$(DB_USERNAME);password=$(DB_PASSWORD);"
+              value: "Server=$(DB_ADDRESS),$(DB_PORT);Database=$(DB_DATABASE);User ID=$(DB_USERNAME);password=$(DB_PASSWORD);"
           ports:
             - name: http
               containerPort: 8080
               protocol: TCP
+          startupProbe:
+            failureThreshold: 3
+            periodSeconds: 10
+            httpGet:
+              path: /app
+              port: http
           livenessProbe:
+            initialDelaySeconds: 10
             httpGet:
               path: /app
               port: http

@@ -1,3 +1,4 @@
+{{- if .Values.grafana.enabled -}}
 apiVersion: monitoring.grafana.com/v1alpha1
 kind: LogsInstance
 metadata:
@@ -5,8 +6,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   clients:
-  - url: {{.Values.loki.endpoint}}
-    tenantId: {{.Values.loki.tenantId}}
+  - url: {{.Values.grafana.loki.endpoint}}
+    tenantId: {{.Values.grafana.loki.tenantId}}
   podLogsSelector:
     matchLabels:
       {{- include "terminfinder-resources.labels" . | nindent 6 }}
@@ -24,3 +25,4 @@ spec:
     - cri: {}
   selector:
     matchLabels: {}
+{{- end }}
