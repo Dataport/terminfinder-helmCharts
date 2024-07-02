@@ -1,0 +1,8 @@
+grafana:
+  loki:
+    endpoint: http://loki-gateway.logging-system.svc.cluster.local/loki/api/v1/push
+    tenantId: 6703bd86-3601-4ea8-96e4-ecff048f1de9
+  enabled: true
+
+traefik:
+  enabled: true
