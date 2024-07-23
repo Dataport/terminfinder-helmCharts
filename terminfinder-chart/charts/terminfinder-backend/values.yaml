@@ -9,7 +9,7 @@ global:
       database: terminfinder
       existingSecret: "" # if not set, default: "{{ Release.Name }}-postgres"
       secretKeys:
-        userPasswordKey: "password"
+        userPasswordKey: "" # if not set, default: "password"
     service:
       name: "" # if not set, default: "{{ Release.Name }}-postgres"
       ports:

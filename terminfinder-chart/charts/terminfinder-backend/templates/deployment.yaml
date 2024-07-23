@@ -50,7 +50,7 @@ spec:
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.postgresql.auth.existingSecret | default (printf "%s-postgresql" (include "common.names.namespace" .)) }}
+                  name: {{ .Values.global.postgresql.auth.existingSecret | default (printf "%s" $svc) }}
                   key: {{ .Values.global.postgresql.auth.secretKeys.userPasswordKey | default "password" }}
             # Patches
             - name: Terminfinder__UseHttps
