@@ -1,4 +1,4 @@
-{{- $svc := .Values.global.postgresql.service.name | default (printf "%s-postgresql" (include "common.names.namespace" .)) }}
+{{- $svc := .Values.global.postgresql.service.name | default (printf "%s-postgresql" .Release.Name) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
