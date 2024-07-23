@@ -58,6 +58,12 @@ To upgrade the helm chart, use the `helm upgrade ...` command:
 $ helm upgrade terminfinder-demo terminfinder-chart -n terminfinder-demo
 ```
 
+### Debug Container
+
+```bash
+$ kubectl run -i --tty --rm debug --image=busybox -n terminfinder-demo --restart=Never
+```
+
 ### Delete Release
 
 To delete the helm chart (release), use the `helm uninstall...` command.
@@ -65,12 +71,8 @@ To delete the helm chart (release), use the `helm uninstall...` command.
 Note that the persistent volume may be available even if the helm release is uninstalled.
 
 ```bash
-# Delete release
+# Delete namespace
 $ helm uninstall terminfinder-demo -n terminfinder-demo
-```
-
-```bash
-# Delete PVCs and namespace
 $ kubectl delete pvc --all -n terminfinder-demo
 $ kubectl delete namespace terminfinder-demo
 ```
