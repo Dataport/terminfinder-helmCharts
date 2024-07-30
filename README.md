@@ -17,6 +17,13 @@ It's recommended to use a dedicated PostgreSQL instance for production usage.
 1. install and run minikube or other local K8s services https://kubernetes.io/docs/tasks/tools/
 2. use scripts in installation below
 
+### Minikube
+
+```bash
+$ minikube addons enable ingress
+$ minikube tunnel
+```
+
 ## Installation
 
 ### Recommendations
@@ -31,31 +38,17 @@ It's recommended to use a dedicated PostgreSQL instance for production usage.
   CoreDNS.
 * For production usage, may use an own postgres instance. (Recommended, use
   the [Cloud Native PG Operator](https://cloudnative-pg.io) in Kubernetes)
+*
 
-### Installation steps
+### Installation & upgrade steps
 
 1. Prepare the value files.
 2. Install the helm charts with `helm install ...` CLI Command:
 
 ```bash
-# Create a namespace (or use default), where to work in:
-$ kubectl create namespace terminfinder-demo
-
-# First installing the helm chart, to the name
-$ helm install terminfinder-demo terminfinder-chart -n terminfinder-demo
-
-# Verify installation of helm charts:
-$ helm list -n terminfinder-demo
-$ kubectl get deploy -n terminfinder-demo
-```
-
-### Upgrade release
-
-To upgrade the helm chart, use the `helm upgrade ...` command:
-
-```bash
-# Upgrade HelmChart
-$ helm upgrade terminfinder-demo terminfinder-chart -n terminfinder-demo
+$ helm upgrade --install -n tf --create-namespace tf1 terminfinder-chart
+$ helm list -n tf
+$ kubectl get pod,deploy,pvc,svc,ing,ep -n tf
 ```
 
 ### Debug Container
@@ -71,10 +64,9 @@ To delete the helm chart (release), use the `helm uninstall...` command.
 Note that the persistent volume may be available even if the helm release is uninstalled.
 
 ```bash
-# Delete namespace
-$ helm uninstall terminfinder-demo -n terminfinder-demo
-$ kubectl delete pvc --all -n terminfinder-demo
-$ kubectl delete namespace terminfinder-demo
+$ helm uninstall tf1 -n tf
+$ kubectl delete pvc --all -n tf
+$ kubectl delete namespace tf
 ```
 
 ## Using an own PostgreSQL DB instance
