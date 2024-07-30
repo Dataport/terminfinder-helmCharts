@@ -1,4 +1,4 @@
-{{- $svc := .Values.global.postgresql.service.name | default (printf "%s-postgresql" .Release.Name) }}
+{{- $svc :=  printf "%s-postgresql" .Release.Name }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -45,29 +45,33 @@ spec:
             - name: DB_USERNAME
               value: {{ .Values.global.postgresql.auth.username }}
             - name: ASPNETCORE_URLS
-              value: http://+:8080
-            # Secrets:
+              value: {{printf "http://+:%d" (int .Values.application.port) }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.postgresql.auth.existingSecret | default (printf "%s" $svc) }}
-                  key: {{ .Values.global.postgresql.auth.secretKeys.userPasswordKey | default "password" }}
-            # Patches
+                  name: {{ required "Postgres DB secret name not set" .Values.global.postgresql.auth.existingSecret }}
+                  key: {{ required "Postgres DB password secretkey not set" .Values.global.postgresql.auth.secretKeys.userPasswordKey }}
             - name: Terminfinder__UseHttps
               value: "false"
             - name: Terminfinder__UseCors
-              value: "false"
+              value: {{ .Values.application.useCors | quote }}
             - name: Terminfinder__Log4NetConfigFilename
               value: log4net.Console.debug.config
             - name: ConnectionStrings__TerminfinderConnection
               value: "Server=$(DB_ADDRESS),$(DB_PORT);Database=$(DB_DATABASE);User ID=$(DB_USERNAME);password=$(DB_PASSWORD);"
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ int .Values.application.port }}
               protocol: TCP
+          command:
+            - "dotnet"
+            - "Dataport.Terminfinder.WebAPI.dll"
+            {{- if .Values.application.migrateDB }}
+            - "--dbmigrate"
+            {{- end }}
           startupProbe:
             failureThreshold: 3
-            periodSeconds: 10
+            periodSeconds: 30
             httpGet:
               path: /app
               port: http

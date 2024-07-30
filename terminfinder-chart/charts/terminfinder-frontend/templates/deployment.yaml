@@ -35,16 +35,18 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            - name: ADDRESSING
-              value: {{ .Values.customerConfig.ADDRESSING }}
-            - name: LOCALE
-              value: {{ .Values.customerConfig.LOCALE }}
-            - name: TITLE
-              value: {{ .Values.customerConfig.TITLE }}
-            - name: EMAIL
-              value: {{ .Values.customerConfig.EMAIL }}
+            - name: CUSTOMER_ID
+              value: {{ required "no customerId set" .Values.application.customerId }}
             - name: API_URL
-              value: {{ .Values.app.backend_url }}
+              value: {{ .Values.application.apiUrl }}
+            - name: TITLE
+              value: {{ .Values.application.title }}
+            - name: LOCALE
+              value: {{ required "no locale set" .Values.application.locale }}
+            - name: ADDRESSING
+              value: {{ required "no addressing set" .Values.application.addressing }}
+            - name: EMAIL
+              value: {{ required "no email set" .Values.application.email }}
           ports:
             - name: http
               containerPort: 8080
