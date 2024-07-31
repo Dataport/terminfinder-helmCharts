@@ -226,10 +226,7 @@ terminfinder-backend:
       ## Enable persistence using Persistent Volume Claims
       ## For BSI compliance, we need to use non-root user
       persistence:
-        enabled: true
-        accessModes:
-          - ReadWriteOnce
-        size: 8Gi
+        enabled: false
 
       # Resources (minimal)
       resources:
