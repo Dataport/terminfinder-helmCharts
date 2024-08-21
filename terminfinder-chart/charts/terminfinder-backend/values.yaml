@@ -94,6 +94,9 @@ postgresql:
     database: terminfinder
     username: terminfinder
     enablePostgresUser: false
+    existingSecret: postgresql-default-auth
+    secretKeys:
+      userPasswordKey: password
 
   primary:
     persistence:
