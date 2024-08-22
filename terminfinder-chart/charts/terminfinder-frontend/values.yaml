@@ -1,10 +1,12 @@
-application:
+customerConfig:
   customerId: "80248A42-8FE2-4D4A-89DA-02E683511F76"
-  apiUrl: ""
   title: ""
   locale: "de-DE"
   addressing: "du"
   email: "demo@demo.demo"
+
+application:
+  apiUrl: ""
 
 replicaCount: 1
 

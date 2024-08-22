@@ -60,3 +60,81 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Check if external db and postgres are not used at the same time
+*/}}
+{{- define "terminfinder-backend.check-database-values" -}}
+{{- if and .Values.externalDatabase.enabled .Values.postgresql.enabled }}
+{{- fail "It's not possible to use an external database and a Postgres DB subchart at the same time." -}}
+{{- end }}
+{{- if and (not .Values.externalDatabase.enabled) (not .Values.postgresql.enabled) }}
+{{- (printf "no database is enabled check-database-values %b" .Values.externalDatabase.enabled) | fail }}
+{{- end }}
+{{- end }}
+
+{{- define "terminfinder-backend.database-server-address" -}}
+{{- include "terminfinder-backend.check-database-values" . }}
+{{- if .Values.externalDatabase.enabled }}
+{{- .Values.externalDatabase.address }}
+{{- else if .Values.postgresql.enabled }}
+{{- printf "%s-postgresql" .Release.Name }}
+{{- else }}
+{{- fail "no database is enabled database-server-address" }}
+{{- end }}
+{{- end }}
+
+{{- define "terminfinder-backend.database-name" -}}
+{{- include "terminfinder-backend.check-database-values" . }}
+{{- if .Values.externalDatabase.enabled }}
+{{- .Values.externalDatabase.database }}
+{{- else if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.database }}
+{{- else }}
+{{- fail "no database is enabled database-name" }}
+{{- end }}
+{{- end }}
+
+{{- define "terminfinder-backend.database-port" -}}
+{{- include "terminfinder-backend.check-database-values" . }}
+{{- if .Values.externalDatabase.enabled }}
+{{- .Values.externalDatabase.port | quote }}
+{{- else if .Values.postgresql.enabled }}
+{{- .Values.postgresql.primary.service.ports.postgresql | quote }}
+{{- else }}
+{{- fail "no database is enabled database-port" }}
+{{- end }}
+{{- end }}
+
+{{- define "terminfinder-backend.database-username" -}}
+{{- include "terminfinder-backend.check-database-values" . }}
+{{- if .Values.externalDatabase.enabled }}
+{{- .Values.externalDatabase.username }}
+{{- else if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.username }}
+{{- else }}
+{{- fail "no database is enabled database-username" }}
+{{- end }}
+{{- end }}
+
+{{- define "terminfinder-backend.database-existingSecret" -}}
+{{- include "terminfinder-backend.check-database-values" . }}
+{{- if .Values.externalDatabase.enabled }}
+{{- .Values.externalDatabase.existingSecret }}
+{{- else if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.existingSecret }}
+{{- else }}
+{{- fail "no database is enabled database-existingSecret" }}
+{{- end }}
+{{- end }}
+
+{{- define "terminfinder-backend.database-userPasswordKey" -}}
+{{- include "terminfinder-backend.check-database-values" . }}
+{{- if .Values.externalDatabase.enabled }}
+{{- .Values.externalDatabase.secretKeys.userPasswordKey }}
+{{- else if .Values.postgresql.enabled }}
+{{- .Values.postgresql.auth.secretKeys.userPasswordKey }}
+{{- else }}
+{{- fail "no database is enabled database-userPasswordKey" }}
+{{- end }}
+{{- end }}

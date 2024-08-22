@@ -1,15 +1,3 @@
-global:
-  postgresql:
-    auth:
-      database: terminfinder
-      username: terminfinder
-      existingSecret: postgresql-default-auth
-      secretKeys:
-        userPasswordKey: password
-    service:
-      ports:
-        postgresql: 5432
-
 replicaCount: 1
 
 image:
@@ -87,10 +75,24 @@ tolerations: [ ]
 
 affinity: { }
 
+externalDatabase:
+  enabled: false
+  address: null
+  port: null
+  database: null
+  username: null
+  existingSecret: null
+  secretKeys:
+    userPasswordKey: null
+
 postgresql:
   enabled: true
 
+  fullnameOverride: null
+
   auth:
+    database: terminfinder
+    username: terminfinder
     enablePostgresUser: false
 
   primary:
