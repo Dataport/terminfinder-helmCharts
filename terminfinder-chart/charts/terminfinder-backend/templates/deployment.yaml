@@ -1,4 +1,3 @@
-{{- $svc :=  printf "%s-postgresql" .Release.Name }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -37,20 +36,20 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DB_DATABASE
-              value: {{ .Values.global.postgresql.auth.database }}
+              value: {{ include "terminfinder-backend.database-name" . }}
             - name: DB_PORT
-              value: {{ .Values.global.postgresql.service.ports.postgresql | quote }}
+              value: {{ include "terminfinder-backend.database-port" . }}
             - name: DB_ADDRESS
-              value: {{ printf "%s" $svc }}
+              value: {{ include "terminfinder-backend.database-server-address" . }}
             - name: DB_USERNAME
-              value: {{ .Values.global.postgresql.auth.username }}
-            - name: ASPNETCORE_URLS
-              value: {{printf "http://+:%d" (int .Values.application.port) }}
+              value: {{ include "terminfinder-backend.database-username" . }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ required "Postgres DB secret name not set" .Values.global.postgresql.auth.existingSecret }}
-                  key: {{ required "Postgres DB password secretkey not set" .Values.global.postgresql.auth.secretKeys.userPasswordKey }}
+                  name: {{ include "terminfinder-backend.database-existingSecret" . }}
+                  key: {{ include "terminfinder-backend.database-userPasswordKey" . }}
+            - name: ASPNETCORE_URLS
+              value: {{printf "http://+:%d" (int .Values.application.port) }}
             - name: Terminfinder__UseHttps
               value: "false"
             - name: Terminfinder__UseCors

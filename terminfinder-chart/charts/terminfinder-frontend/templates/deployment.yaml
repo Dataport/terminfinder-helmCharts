@@ -36,17 +36,17 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: CUSTOMER_ID
-              value: {{ required "no customerId set" .Values.application.customerId }}
+              value: {{ required "no customerId set" .Values.customerConfig.customerId }}
             - name: API_URL
               value: {{ .Values.application.apiUrl }}
             - name: TITLE
-              value: {{ .Values.application.title }}
+              value: {{ .Values.customerConfig.title }}
             - name: LOCALE
-              value: {{ required "no locale set" .Values.application.locale }}
+              value: {{ required "no locale set" .Values.customerConfig.locale }}
             - name: ADDRESSING
-              value: {{ required "no addressing set" .Values.application.addressing }}
+              value: {{ required "no addressing set" .Values.customerConfig.addressing }}
             - name: EMAIL
-              value: {{ required "no email set" .Values.application.email }}
+              value: {{ required "no email set" .Values.customerConfig.email }}
           ports:
             - name: http
               containerPort: 8080
