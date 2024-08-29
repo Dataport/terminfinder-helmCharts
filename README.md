@@ -20,8 +20,8 @@ It's recommended to use a dedicated PostgreSQL instance for production usage.
 ### Minikube
 
 ```bash
-$ minikube addons enable ingress
-$ minikube tunnel
+minikube addons enable ingress
+minikube tunnel
 ```
 
 ## Installation
@@ -46,9 +46,9 @@ $ minikube tunnel
 2. Install the helm charts with `helm install ...` CLI Command:
 
 ```bash
-$ helm upgrade --install -n tf --create-namespace tf1 terminfinder-chart
-$ helm list -n tf
-$ kubectl get pod,deploy,pvc,svc,ing,ep -n tf
+helm upgrade --install -n tf --create-namespace tf1 terminfinder-chart
+helm list -n tf
+watch kubectl get pod,deploy,pvc,svc,ing,ep -n tf
 ```
 
 ### Debug Container
@@ -57,7 +57,7 @@ $ kubectl get pod,deploy,pvc,svc,ing,ep -n tf
 $ kubectl run -i --tty --rm debug --image=busybox -n terminfinder-demo --restart=Never
 ```
 
-### Delete Release
+### Delete Release, pvc, and namespace
 
 To delete the helm chart (release), use the `helm uninstall...` command.
 
@@ -77,11 +77,12 @@ By default, an own instance of postgres is installed with the `terminfinder-back
 the following configuration to you `values.yaml` of the backend helm installation:
 
 ```yaml
-postgresql:
-  enabled: false
+terminfinder-backend:
+  postgresql:
+    enabled: false
 
-  # Or configure it with the docs here:
-  # https://github.com/bitnami/charts/tree/main/bitnami/postgresql#parameters
+    # Or configure it with the docs here:
+    # https://github.com/bitnami/charts/tree/main/bitnami/postgresql#parameters
 ```
 
 Additionally, you should store credentials (of db user password) into a secret like that:
@@ -96,20 +97,19 @@ metadata:
     app.kubernetes.io/name: postgresql
 type: Opaque
 data:
-  customPasswordKey: "eW91LWtub3ctaG93LWl0LXdvcmtzLSN0aGVsw6RuZAo="
+  customPasswordKey: "secret"
 ```
 
 With this secret already deployed, you can modify the helm chart deployment of the `terminfinder-backend` on these
 values:
 
 ```yaml
-global:
+terminfinder-backend:
   postgresql:
     auth:
       username: <your-custom-username>
-      # password: this-is-not-secure-for-production!
       database: <your-custom-database>
-      existingSecret: terminfinder-backend-custom-postgresql # or how you secret is called
+      existingSecret: terminfinder-backend-custom-postgresql
       secretKeys:
-        userPasswordKey: customPasswordKey # the key of the secret, where the password is saved
+        userPasswordKey: customPasswordKey
 ```
