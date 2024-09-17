@@ -60,3 +60,21 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Run tpl on an input value
+
+Takes 2 input parameters as list
+Parameter 1: $ (Root context, required by tpl)
+Parameter 2: Value to run tpl on
+*/}}
+{{- define "terminfinder-frontend.value-tpl" -}}
+  {{- $ := index . 0 }}
+  {{- $tpl := index . 1 -}}
+  {{- /* only call tpl if there is at least one template expression */ -}}
+  {{- if contains "{{" $tpl -}}
+    {{- tpl $tpl $ }}
+  {{- else -}}
+    {{- $tpl -}}
+  {{- end -}}
+{{- end -}}

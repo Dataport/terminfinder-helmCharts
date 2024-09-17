@@ -138,3 +138,21 @@ Check if external db and postgres are not used at the same time
 {{- fail "no database is enabled database-userPasswordKey" }}
 {{- end }}
 {{- end }}
+
+{{/*
+Run tpl on an input value
+
+Takes 2 input parameters as list
+Parameter 1: $ (Root context, required by tpl)
+Parameter 2: Value to run tpl on
+*/}}
+{{- define "terminfinder-backend.value-tpl" -}}
+  {{- $ := index . 0 }}
+  {{- $tpl := index . 1 -}}
+  {{- /* only call tpl if there is at least one template expression */ -}}
+  {{- if contains "{{" $tpl -}}
+    {{- tpl $tpl $ }}
+  {{- else -}}
+    {{- $tpl -}}
+  {{- end -}}
+{{- end -}}
