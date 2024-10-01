@@ -38,7 +38,54 @@ minikube tunnel
   CoreDNS.
 * For production usage, may use an own postgres instance. (Recommended, use
   the [Cloud Native PG Operator](https://cloudnative-pg.io) in Kubernetes)
-*
+
+### Using an own PostgreSQL DB instance
+
+The helm chart deployment of the `terminfinder-frontend` will be kept untouched.
+
+By default, an own instance of postgres is installed with the `terminfinder-backend` chart. You can disable by adding
+the following configuration to you `values.yaml` of the backend helm installation:
+
+```yaml
+terminfinder-backend:
+  externalDatabase:
+  enabled: true
+  address: <your-custom-value>
+  port: <your-custom-value>
+  database: <your-custom-value>
+  username: <your-custom-value>
+  existingSecret: terminfinder-backend-custom-postgresql
+  secretKeys:
+    userPasswordKey: key
+
+  postgresql:
+    enabled: false
+```
+
+Additionally, you should store credentials (of db user password) into a secret like that:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: terminfinder-backend-custom-postgresql
+  namespace: terminfinder-demo
+  labels:
+    app.kubernetes.io/name: postgresql
+type: Opaque
+data:
+  key: "secret"
+```
+
+#### Enable uuid-ossp extention
+
+A prerequisite for running the terminfinder backend is the postgresql extension `uuid-ossp`, which can be enabled by
+running the command as db-admin:
+
+```
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+ALTER EXTENSION "uuid-ossp" SET SCHEMA public;
+```
 
 ### Installation & upgrade steps
 
@@ -67,49 +114,4 @@ Note that the persistent volume may be available even if the helm release is uni
 $ helm uninstall tf1 -n tf
 $ kubectl delete pvc --all -n tf
 $ kubectl delete namespace tf
-```
-
-## Using an own PostgreSQL DB instance
-
-The helm chart deployment of the `terminfinder-frontend` will be kept untouched.
-
-By default, an own instance of postgres is installed with the `terminfinder-backend` chart. You can disable by adding
-the following configuration to you `values.yaml` of the backend helm installation:
-
-```yaml
-terminfinder-backend:
-  postgresql:
-    enabled: false
-
-    # Or configure it with the docs here:
-    # https://github.com/bitnami/charts/tree/main/bitnami/postgresql#parameters
-```
-
-Additionally, you should store credentials (of db user password) into a secret like that:
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: terminfinder-backend-custom-postgresql
-  namespace: terminfinder-demo
-  labels:
-    app.kubernetes.io/name: postgresql
-type: Opaque
-data:
-  customPasswordKey: "secret"
-```
-
-With this secret already deployed, you can modify the helm chart deployment of the `terminfinder-backend` on these
-values:
-
-```yaml
-terminfinder-backend:
-  postgresql:
-    auth:
-      username: <your-custom-username>
-      database: <your-custom-database>
-      existingSecret: terminfinder-backend-custom-postgresql
-      secretKeys:
-        userPasswordKey: customPasswordKey
 ```
