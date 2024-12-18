@@ -8,7 +8,7 @@ Complete Helm Chart repository for deploying the Terminfinder to any kubernetes 
 
 Licensed under the EUPL 1.2
 
-Copyright © 2022-2023 Dataport AöR
+Copyright © 2022-2024 Dataport AöR
 
 [CONTRIBUTING.md](./docs/CONTRIBUTING.md)
 
