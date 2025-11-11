@@ -51,6 +51,16 @@ spec:
               value: {{ required "no addressing set" .Values.customerConfig.addressing }}
             - name: EMAIL
               value: {{ required "no email set" .Values.customerConfig.email }}
+            - name: COLORS
+              value: {{ .Values.customerConfig.colors | toYaml | nindent 14 }}
+            - name: IMPRINT
+              value: {{ .Values.customerConfig.imprint | toYaml | nindent 14 }}
+            - name: PRIVACY
+              value: {{ .Values.customerConfig.privacy | toYaml | nindent 14 }}
+            - name: TOS
+              value: {{ .Values.customerConfig.tos | toYaml | nindent 14 }}
+            - name: ACCESSIBILITY
+              value: {{ .Values.customerConfig.accessibility | toYaml | nindent 14 }}
           ports:
             - name: http
               containerPort: 8080

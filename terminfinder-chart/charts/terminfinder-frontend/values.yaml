@@ -4,6 +4,21 @@ customerConfig:
   locale: "de-DE"
   addressing: "du"
   email: "demo@demo.demo"
+  # See https://github.com/Dataport/terminfinder-frontend?tab=readme-ov-file#farben
+  colors: |
+    {
+    }
+  imprint: |
+    <p>Hier steht das Impressum.</p>
+  privacy: |
+    <h2>Datenschutzerklärung</h2>
+    <p>Hier steht die Datenschutzerklärung.</p>
+  tos: |
+    <h2>Allgemeine Geschäftsbedingungen (AGB)</h2>
+    <p>Hier stehen die Allgemeinen Geschäftsbedingungen.</p>
+  accessibility: |
+    <h2>Barrierefreiheitserklärung</h2>
+    <p>Hier steht die Barrierefreiheitserklärung.</p>
 
 application:
   apiUrl: ""
@@ -13,18 +28,18 @@ replicaCount: 1
 image:
   repository: registry.opencode.de/dataport/terminfinder/terminfinder-frontend
   pullPolicy: IfNotPresent
-  tag: "0.2.0"
+  tag: "0.2.1"
 
-imagePullSecrets: [ ]
+imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
   create: false
-  annotations: { }
+  annotations: {}
   name: ""
 
-podAnnotations: { }
+podAnnotations: {}
 
 podSecurityContext:
   runAsNonRoot: true
@@ -51,7 +66,7 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-  tls: [ ]
+  tls: []
 
 resources:
   limits:
@@ -67,8 +82,8 @@ autoscaling:
   maxReplicas: 20
   targetCPUUtilizationPercentage: 80
 
-nodeSelector: { }
+nodeSelector: {}
 
-tolerations: [ ]
+tolerations: []
 
-affinity: { }
+affinity: {}
