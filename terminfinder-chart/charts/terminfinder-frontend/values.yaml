@@ -28,7 +28,7 @@ replicaCount: 1
 image:
   repository: registry.opencode.de/dataport/terminfinder/terminfinder-frontend
   pullPolicy: IfNotPresent
-  tag: "0.2.1"
+  tag: "0.2.4"
 
 imagePullSecrets: []
 nameOverride: ""
