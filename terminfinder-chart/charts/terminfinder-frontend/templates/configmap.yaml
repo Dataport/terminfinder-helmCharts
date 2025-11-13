@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: terminfinder-frontend
+  annotations:
+    use-subpath: "true"
+data:
+  customer-logo.svg: {{ .Values.customerConfig.logo | toYaml | nindent 4 }}

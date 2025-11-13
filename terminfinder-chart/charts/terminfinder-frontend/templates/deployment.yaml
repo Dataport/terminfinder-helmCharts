@@ -14,8 +14,10 @@ spec:
       {{- include "terminfinder-frontend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+        # Restart Deployment when ConfigMap changes. See https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
@@ -65,6 +67,10 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html/assets/logo.svg
+              name: terminfinder-frontend
+              subPath: logo.svg
           livenessProbe:
             initialDelaySeconds: 3
             httpGet:
@@ -77,6 +83,13 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - configMap:
+            items:
+              - key: customer-logo.svg
+                path: logo.svg
+            name: terminfinder-frontend
+          name: terminfinder-frontend
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
